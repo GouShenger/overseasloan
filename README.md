@@ -149,6 +149,10 @@ This project is organized as a Maven multi-module project. Each microservice can
 
 ---
 
+## 代码架构 
+
+![ code](./images/image.png)
+
 ## 🛠️ 技术栈
 
 | 层级 | 技术 |
@@ -250,6 +254,8 @@ A：联系客服获取在线演示账号。
 
 > 购买前建议先看演示，满意再下单
 > QQ / 微信：18382383113
+> weixin:
+    ![weixin](./images/qcode.jpg)
 > 有任何技术问题，购买后7天内免费解答
 
 ---
