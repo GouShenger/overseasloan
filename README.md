@@ -1,3 +1,96 @@
+# Overseas Loan Management System
+
+A professional **Overseas Loan Management System** designed for lending companies, microfinance institutions and fintech startups.
+
+海外信贷系统 / Loan System / Lending Platform
+
+---
+
+## System Features
+
+- Loan application management
+- Customer management
+- Loan approval workflow
+- Repayment schedule
+- Payment integration
+- Collection management
+- Financial reports
+- Admin dashboard
+
+---
+
+## System Screenshots
+
+Dashboard
+
+Loan Management
+
+Customer Management
+
+Collection System
+
+---
+
+## Suitable For
+
+- Overseas lending business
+- Microfinance companies
+- Consumer finance platforms
+- Installment loan platforms
+
+---
+
+## Tech Stack
+
+Backend
+
+- Java
+- Spring Boot
+- MySQL
+- Redis
+
+Frontend
+
+- Vue
+- Element UI
+
+---
+
+## System Modules
+
+- Loan Management
+- Customer Management
+- Repayment Management
+- Collection Management
+- Payment Integration
+- Report System
+
+---
+
+## Demo
+
+Contact for demo access.
+
+---
+
+## Source Code Purchase
+
+Full commercial source code is available.
+
+Contact:
+
+Telegram  
+WhatsApp  
+Email
+
+---
+
+## License
+
+This repository only shows partial code and system introduction.
+
+Full source code requires commercial license.
+
 # -micro-service
 
 ## System Architecture
@@ -64,6 +157,17 @@ This project is organized as a Maven multi-module project. Each microservice can
 - **Entry points**:
   - `-gateway` exposes core and marketing APIs to external clients.
   - `-external-callback-gateway` receives callbacks from third parties and forwards them to internal microservices.
+
+  ----
+
+  ## Commercial Source Code Available
+
+  Full commercial source code is available. Includes:
+
+    Full Source Code
+    Database Script
+    Deployment Guide
+    Technical Support
 
 ## Third-party Dependencies
 
@@ -233,6 +337,14 @@ This project is organized as a Maven multi-module project. Each microservice can
 - 服务器：2核4G起（推荐4核8G生产环境）
 
 ---
+
+## 系统截图
+![login](./images/logi.png)
+![dashbord](./images/dashbord.png)
+![customers](./images/cs.png)
+![orders](./images/orders.png)
+![payout](./images/payout.png)
+![payin](./images/payin.png)
 
 ## ❓ 常见问题
 
