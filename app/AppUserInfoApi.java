@@ -1,17 +1,4 @@
-package com.yemi.core.api.app;
 
-import com.yemi.core.consts.UserAction;
-import com.yemi.core.consts.UserActionEndpoint;
-import com.yemi.core.model.OcrData;
-import com.yemi.core.model.app.AppOcrVo;
-import com.yemi.core.model.dto.FileInfoDto;
-import com.yemi.core.model.dto.UserContactsDto;
-import com.yemi.core.model.dto.UserInfoDataSubmissionDto;
-import com.yemi.core.model.dto.UserLivenessDto;
-import com.yemi.core.model.vo.UserInfoDataVo;
-import com.yemi.core.model.vo.UserInfoFieldVo;
-import com.yemi.core.model.vo.UserInfoFulfillmentStatusVo;
-import com.yemi.core.model.vo.UserInfoTypeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -21,59 +8,59 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = "APP-用户信息")
+@Api(tags = "APP")
 @RequestMapping("/app/v1/user/info")
 public interface AppUserInfoApi {
 
-    @ApiOperation(value = "获取用户信息类型")
+    @ApiOperation(value = "Get user info types")
     @GetMapping("/types")
     List<UserInfoTypeVo> getAllUserInfoType();
 
-    @ApiOperation(value = "根据类型ID获取用户信息字段列表")
+    @ApiOperation(value = "Get user info fields by type id")
     @GetMapping("/types/fields/{infoTypeId}")
     List<UserInfoFieldVo> getUserInfoFields(@PathVariable Long infoTypeId);
 
-    @ApiOperation(value = "提交用户信息")
+    @ApiOperation(value = "Submit user info")
     @PostMapping
     String submitUserInfo(@RequestBody @Validated UserInfoDataSubmissionDto submissionDto);
 
-    @ApiOperation(value = "获取用户信息填写状态")
+    @ApiOperation(value = "Get user info fill status")
     @GetMapping("/status")
     UserInfoFulfillmentStatusVo getUserFulfillmentStatus();
 
-    @ApiOperation(value = "获取用户已填写数据")
+    @ApiOperation(value = "Get user filled data")
     @GetMapping("/data")
     List<UserInfoDataVo> getUserSubmitData();
 
-    @ApiOperation(value = "根据当前用户获取省市县级联数据-供APP使用")
+    @ApiOperation(value = "Get province city county data by current user-for APP use")
     @GetMapping("/province/app")
     Map<String, List<Map<String, List<String>>>> getProvinceData();
 
-    @ApiOperation(value = "ocr身份证识别")
+    @ApiOperation(value = "OCR identity recognition")
     @PostMapping("/ocr/identification")
     OcrData ocrIdentify(FileInfoDto dto, @RequestPart("file") MultipartFile file);
 
-    @ApiOperation(value = "ocr身份证识别-结果保存")
+    @ApiOperation(value = "OCR identity recognition-result save")
     @PostMapping("/ocr")
     String saveOcrInfo(@RequestBody @Validated OcrData ocrData);
 
-    @ApiOperation(value = "保存联系人")
+    @ApiOperation(value = "Save contacts")
     @PostMapping("/contacts")
     String saveUserContacts(@RequestBody @Validated UserContactsDto contactsDto);
 
-    @ApiOperation(value = "活体识别")
+    @ApiOperation(value = "Face recognition")
     @PostMapping("/liveness")
     String saveFaceIdentifyResult(@RequestBody @Validated UserLivenessDto userLivenessDto);
 
-    @ApiOperation(value = "ocr身份证识别结果获取")
+    @ApiOperation(value = "OCR identity recognition result get")
     @GetMapping("/ocr")
     AppOcrVo getOcrInfo();
 
-    @ApiOperation(value = "获取旷视活体识别token")
+    @ApiOperation(value = "Get Megvii face recognition token")
     @PostMapping("/liveness/token")
     String getLivenessToken(@RequestBody @Validated UserLivenessDto userLivenessDto);
 
-    @ApiOperation(value = "活体识别-旷视")
+    @ApiOperation(value = "Face recognition-Megvii")
     @PostMapping("/liveness/megv")
     String saveLivenessResult(@RequestParam String token, @RequestPart("file") MultipartFile file);
 }

@@ -1,8 +1,4 @@
-package com.yemi.core.api.app;
 
-import com.yemi.core.config.NacosConfig;
-import com.yemi.core.service.ISystemService;
-import com.yemi.web.context.ThreadContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +10,6 @@ import java.util.Map;
 /**
  * @version 1.0
  * @description:
- * @author: hanxiaojun
  * @date 2023/11/20 16:53
  */
 @RestController

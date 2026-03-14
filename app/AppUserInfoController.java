@@ -1,31 +1,4 @@
-package com.yemi.core.api.app;
 
-import com.yemi.core.ads.FacebookAdsReport;
-import com.yemi.core.ads.FacebookAdsReporter;
-import com.yemi.core.consts.UserAction;
-import com.yemi.core.consts.UserActionEndpoint;
-import com.yemi.core.consts.UserAuthType;
-import com.yemi.core.helper.LivenessCheckHelper;
-import com.yemi.core.helper.UserGeoParser;
-import com.yemi.core.model.OcrData;
-import com.yemi.core.model.PositionDetail;
-import com.yemi.core.model.app.AppOcrVo;
-import com.yemi.core.model.dto.FileInfoDto;
-import com.yemi.core.model.dto.UserContactsDto;
-import com.yemi.core.model.dto.UserInfoDataSubmissionDto;
-import com.yemi.core.model.dto.UserLivenessDto;
-import com.yemi.core.model.vo.UserInfoDataVo;
-import com.yemi.core.model.vo.UserInfoFieldVo;
-import com.yemi.core.model.vo.UserInfoFulfillmentStatusVo;
-import com.yemi.core.model.vo.UserInfoTypeVo;
-import com.yemi.core.ratelimit.RateLimitRule;
-import com.yemi.core.ratelimit.RateLimiter;
-import com.yemi.core.service.IOcrService;
-import com.yemi.core.service.IUserGeoService;
-import com.yemi.core.service.IUserInfoService;
-import com.yemi.utils.consts.CommonResult;
-import com.yemi.web.context.ThreadContext;
-import com.yemi.web.result.LocalizationTag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,9 +46,9 @@ public class AppUserInfoController implements AppUserInfoApi {
     public String submitUserInfo(UserInfoDataSubmissionDto submissionDto) {
         Long userId = ThreadContext.getUser().getUserId();
 
-        // 提交数据
+        // update user info data
         userInfoService.submitUserInfoData(userId, submissionDto);
-        // 完成后上报数据
+        // report data after submission
         try {
             UserAuthType authType = UserAuthType.getByOrder(Integer.parseInt(submissionDto.getInfoTypeId().toString()));
             if (authType != null) {
@@ -88,12 +61,12 @@ public class AppUserInfoController implements AppUserInfoApi {
                 facebookAdsReporter.reportWithRequestContext(eventName, userId, null);
             }
         } catch (Exception e) {
-            log.error("上报Facebook错误", e);
+            log.error("Report Facebook error", e);
         }
-        // 记录用户位置信息
+        // record user location information
         Optional<PositionDetail> positionDetail = PositionDetail.of(submissionDto.getPosition());
         positionDetail.ifPresent(pd -> userGeoParser.asyncParseAndSave(userId, UserAction.USER_INFO_SUBMIT, String.valueOf(userId), pd.getLatitude(), pd.getLongitude(), submissionDto.getPosition()));
-        // 检查用户联系人
+        // check user contacts
         if (Objects.equals(submissionDto.getInfoTypeId(), (long) UserAuthType.DYNAMIC_INFO.getOrder())) {
             userInfoService.checkUserContacts(userId);
         }
@@ -134,7 +107,7 @@ public class AppUserInfoController implements AppUserInfoApi {
                 .seconds(60).limit(5).build();
         rateLimiter.rateLimit(rateLimitRule);
         ocrService.saveOcrInfo(userId, ocrData);
-        // 记录用户位置信息
+        // record user location information
         Optional<PositionDetail> positionDetail = PositionDetail.of(ocrData.getPosition());
         positionDetail.ifPresent(pd -> userGeoParser.asyncParseAndSave(userId, UserAction.OCR_CHECK, String.valueOf(userId), pd.getLatitude(), pd.getLongitude(), ocrData.getPosition()));
         return CommonResult.SUCCESS;
@@ -156,7 +129,7 @@ public class AppUserInfoController implements AppUserInfoApi {
                 .seconds(60).limit(5).build();
         rateLimiter.rateLimit(rateLimitRule);
         userInfoService.livenessCheck(userId, userLivenessDto);
-        // 记录用户位置信息
+        // record user location information
         Optional<PositionDetail> positionDetail = PositionDetail.of(userLivenessDto.getPosition());
         positionDetail.ifPresent(pd -> userGeoParser.asyncParseAndSave(userId, UserAction.LIVENESS_CHECK, String.valueOf(userId), pd.getLatitude(), pd.getLongitude(), userLivenessDto.getPosition()));
         return CommonResult.SUCCESS;
@@ -174,7 +147,7 @@ public class AppUserInfoController implements AppUserInfoApi {
         Long userId = ThreadContext.getUser().getUserId();
         RateLimitRule rateLimitRule = RateLimitRule.builder().key("LIVENESS_CHECK" + userId) .seconds(60).limit(5).build();
         rateLimiter.rateLimit(rateLimitRule);
-        // 记录用户位置信息
+        // record user location information
         Optional<PositionDetail> positionDetail = PositionDetail.of(userLivenessDto.getPosition());
         positionDetail.ifPresent(pd -> userGeoParser.asyncParseAndSave(userId, UserAction.LIVENESS_CHECK, String.valueOf(userId), pd.getLatitude(), pd.getLongitude(), userLivenessDto.getPosition()));
         return livenessCheckHelper.getLivenessToken(userId, userLivenessDto);
